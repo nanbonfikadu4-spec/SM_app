@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="om">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SM — Walqunnamtii Hawaasaa Ammayyaa</title>
+  <style>
+    :root {
+      --bg-canvas: #eef2f7;
+      --bg-card: #ffffff;
+      --bg-muted: #e6ebf2;
+      --ink-main: #0f172a;
+      --ink-sub: #526071;
+      --line: #dce3ec;
+      --indigo: #4338ca;
+      --emerald: #059669;
+      --rose: #e11d48;
+      --grad-brand: linear-gradient(135deg, #4338ca 0%, #0284c7 52%, #059669 100%);
+      --grad-soft: linear-gradient(135deg, rgba(67,56,202,0.10), rgba(5,150,105,0.10));
+      --glass: rgba(255, 255, 255, 0.84);
+      --elev: 0 12px 28px -8px rgba(15, 23, 42, 0.09);
+    }
+
+    body.dark-mode {
+      --bg-canvas: #070b14;
+      --bg-card: #111827;
+      --bg-muted: #1e293b;
+      --ink-main: #f8fafc;
+      --ink-sub: #94a3b8;
+      --line: #1f2937;
+      --grad-soft: linear-gradient(135deg, rgba(99,102,241,0.16), rgba(16,185,129,0.14));
+      --glass: rgba(17, 24, 39, 0.84);
+      --elev: 0 14px 32px -8px rgba(0, 0, 0, 0.55);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg-canvas);
+      color: var(--ink-main);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    /* Centered Modern Stage (Works seamlessly on mobile & desktop) */
+    .sm-stage {
+      max-width: 640px;
+      margin: 0 auto;
+      min-height: 100vh;
+      padding-bottom: 92px;
+      background: var(--bg-canvas);
+    }
+
+    /* Top Glass Header */
+    .sm-header {
+      position: sticky;
+      top: 0;
+      z-index: 120;
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .sm-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .sm-emblem {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: var(--grad-brand);
+      color: #fff;
+      font-weight: 900;
+      font-size: 17px;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(67, 56, 202, 0.32);
+    }
+
+    .sm-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sm-title {
+      font-size: 18px;
+      font-weight: 800;
+      background: var(--grad-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+
+    .sm-tagline {
+      font-size: 11px;
+      color: var(--ink-sub);
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tool-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-card);
+      color: var(--ink-main);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .tool-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--indigo);
+    }
+
+    /* Stories Strip */
+    .stories-wrap {
+      padding: 14px 16px 6px;
+      display: flex;
+      gap: 11px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .stories-wrap::-webkit-scrollbar {
+      display: none;
+    }
+
+    .story-card {
+      width: 108px;
+      height: 166px;
+      border-radius: 20px;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      box-shadow: var(--elev);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .story-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .story-create-top {
+      height: 114px;
+      background: var(--grad-brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: #fff;
+      font-weight: 800;
+      font-size: 24px;
+    }
+
+    .story-create-top img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .story-plus-badge {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--emerald);
+      color: #fff;
+      border: 3px solid var(--bg-card);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .story-create-txt {
+      height: 52px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .story-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .story-note-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--grad-brand);
+      padding: 12px 8px 28px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .story-caption-bar {
+      position: absolute;
+      inset: auto 0 0 0;
+      background: linear-gradient(transparent, rgba(2, 6, 23, 0.85));
+      padding: 20px 8px 8px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Composer Box */
+    .composer-box {
+      margin: 10px 16px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: var(--elev);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .composer-prompt {
+      flex: 1;
+      background: var(--bg-muted);
+      border: 1px solid transparent;
+      border-radius: 15px;
+      padding: 11px 14px;
+      color: var(--ink-sub);
+      font-size: 14px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    .composer-prompt:hover {
+      border-color: var(--indigo);
+      color: var(--ink-main);
+    }
+
+    .upload-pill {
+      background: var(--grad-soft);
+      color: var(--emerald);
+      border: 1px solid rgba(5, 150, 105, 0.25);
+      border-radius: 14px;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* Post Cards */
+    .post-card {
+      margin: 0 16px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--elev);
+    }
+
+    .post-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .author-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .ring-frame {
+      padding: 2px;
+      border-radius: 50%;
+      background: var(--grad-brand);
+      flex-shrink: 0;
+    }
+
+    .author-name {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .author-sub {
+      font-size: 12px;
+      color: var(--ink-sub);
+    }
+
+    .post-body {
+      font-size: 15px;
+      line-height: 1.55;
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+    }
+
+    .post-media {
+      width: 100%;
+      max-height: 430px;
+      border-radius: 18px;
+      object-fit: cover;
+      background: #000;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    video.post-media {
+      object-fit: contain;
+    }
+
+    .post-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .react-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .react-chip {
+      background: var(--bg-muted);
+      color: var(--ink-main);
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .react-chip:hover {
+      border-color: var(--indigo);
+      background: var(--grad-soft);
+    }
+
+    .del-chip {
+      background: rgba(225, 29, 72, 0.1);
+      color: var(--rose);
+      border: none;
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Comments */
+    .comments-wrap {
+      margin-top: 12px;
+      background: var(--bg-muted);
+      border-radius: 18px;
+      padding: 11px 13px;
+    }
+
+    .comment-item {
+      font-size: 13.5px;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .comment-item:last-of-type {
+      border-bottom: none;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .comment-form input {
+      flex: 1;
+      background: var(--bg-card);
+      color: var(--ink-main);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 13.5px;
+      outline: none;
+    }
+
+    .comment-form button {
+      background: var(--grad-brand);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 0 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Floating Bottom Dock */
+    .bottom-dock {
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 520px;
+      background: var(--glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 7px 10px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      box-shadow: var(--elev);
+      z-index: 150;
+    }
+
+    .dock-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 7px 4px;
+      border-radius: 16px;
+      color: var(--ink-sub);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      position: relative;
+      transition: 0.18s;
+    }
+
+    .dock-btn.active {
+      background: var(--grad-brand);
+      color: #fff;
+    }
+
+    .dock-count {
+      position: absolute;
+      top: 2px;
+      right: 20%;
+      background: var(--rose);
+      color: #fff;
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 999px;
+    }
+
+    /* Modals & Inputs */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 300;
+      padding: 16px;
+    }
+
+    .modal-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      width: 100%;
+      max-width: 450px;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: var(--elev);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 12px;
+    }
+
+    .field-input {
+      width: 100%;
+      background: var(--bg-muted);
+      color: var(--ink-main);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 14.5px;
+      outline: none;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: var(--grad-brand);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 15px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Chat */
+    .chat-card {
+      margin: 14px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--elev);
+      display: flex;
+      flex-direction: column;
+      height: 74vh;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding: 10px 2px;
+    }
+
+    .chat-bubble {
+      max-width: 78%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      background: var(--bg-muted);
+      align-self: flex-start;
+      font-size: 14.5px;
+    }
+
+    .chat-bubble.mine {
+      background: var(--grad-brand);
+      color: #fff;
+      align-self: flex-end;
+    }
+
+    /* Auth */
+    .auth-center {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 410px;
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 30px 24px;
+      box-shadow: var(--elev);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUTH SCREEN -->
+  <div id="authScreen" class="auth-center">
+    <div class="auth-box">
+      <div style="text-align:center;margin-bottom:22px;">
+        <div class="sm-emblem" style="width:56px;height:56px;font-size:22px;margin:0 auto 10px;">SM</div>
+        <h2 style="font-size:23px;font-weight:800;">Baga Gara SM Dhufte</h2>
+        <p style="color:var(--ink-sub);font-size:13.5px;margin-top:4px;">Walqunnamtii hawaasaa ammayyaa fi ergaa hatattamaa</p>
+      </div>
+      <input type="text" id="regFullName" class="field-input" placeholder="Maqaa Guutuu (Fkn: Nanbo Fikadu)" style="display:none;" />
+      <input type="text" id="authUsername" class="field-input" placeholder="Username (Maqaa Fayyadamaa)" />
+      <input type="password" id="authPassword" class="field-input" placeholder="Jecha Icciitii (Password)" />
+      <button class="btn-primary" onclick="submitAuth()" id="authBtn">Seeni</button>
+      <div style="text-align:center;margin-top:15px;color:var(--indigo);font-weight:700;font-size:14px;cursor:pointer;" onclick="toggleAuth()" id="authToggle">
+        Akkaawuntii hin qabduu? Asitti galmaa'i
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="mainShell" class="sm-stage" style="display:none;">
+    <header class="sm-header">
+      <div class="sm-brand" onclick="openTab('feed')">
+        <div class="sm-emblem">SM</div>
+        <div class="sm-title-wrap">
+          <span class="sm-title">SM</span>
+          <span class="sm-tagline">Hawaasa Ammayyaa</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="tool-btn" title="Barbaadi" onclick="toggleSearch()">🔍</button>
+        <button class="tool-btn" title="Bifa Halkanii / Guyyaa" onclick="toggleTheme()" id="themeBtn">🌙</button>
+        <button class="tool-btn" title="Maxxansa Haaraa" onclick="openPostModal()">＋</button>
+      </div>
+    </header>
+
+    <div id="searchWrap" style="display:none;padding:10px 16px 0;">
+      <input type="text" id="searchInput" class="field-input" style="margin-bottom:0;" oninput="renderFeed()" placeholder="Maxxansa ykn maqaa namaa barbaadi..." />
+    </div>
+
+    <!-- FEED -->
+    <div id="view-feed">
+      <div class="stories-wrap" id="storiesRow"></div>
+
+      <div class="composer-box">
+        <div class="ring-frame" onclick="openTab('profile')" style="cursor:pointer;" id="composerAvatar"></div>
+        <button class="composer-prompt" onclick="openPostModal()">Maal qooddachuu barbaadda?</button>
+        <button class="upload-pill" onclick="openPostModal(true)">📷 Miidiyaa</button>
+      </div>
+
+      <div id="feedList"></div>
+    </div>
+
+    <!-- PEOPLE -->
+    <div id="view-friends" style="display:none;padding-top:14px;">
+      <div class="post-card">
+        <h3 style="margin-bottom:12px;">Miseensota SM</h3>
+        <div id="usersList"></div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div id="view-chat" style="display:none;">
+      <div class="chat-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--line);">
+          <strong>⚡ Ergaa Hatattamaa (Live)</strong>
+          <span style="font-size:12px;color:var(--emerald);font-weight:700;">● Wal-qunnamtii qilleensa irraa</span>
+        </div>
+        <div id="chatBox" class="chat-messages"></div>
+        <div class="comment-form">
+          <input type="text" id="chatInput" placeholder="Ergaa kee asitti barreessi..." onkeypress="if(event.key==='Enter') sendChat()" />
+          <button onclick="sendChat()">Ergi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REELS / VIDEOS -->
+    <div id="view-videos" style="display:none;padding-top:14px;">
+      <div id="videosList"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="view-profile" style="display:none;padding-top:14px;">
+      <div class="post-card">
+        <div style="height:88px;border-radius:18px;background:var(--grad-brand);margin-bottom:-34px;"></div>
+        <div style="padding:0 8px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:12px;">
+            <div class="ring-frame" style="padding:3px;" id="profAvatarBig"></div>
+            <span style="background:var(--bg-muted);padding:6px 14px;border-radius:999px;font-size:13px;font-weight:700;" id="profCount">0 Maxxansa</span>
+          </div>
+          <h2 id="profName" style="font-size:21px;"></h2>
+          <div id="profUser" style="color:var(--ink-sub);font-size:13.5px;margin-bottom:8px;"></div>
+          <p id="profBio" style="font-size:14.5px;line-height:1.5;margin-bottom:16px;"></p>
+
+          <div style="border-top:1px solid var(--line);padding-top:14px;">
+            <div style="font-weight:700;margin-bottom:10px;">Profile Kee Fooyyessi</div>
+            <input type="text" id="editFullName" class="field-input" placeholder="Maqaa Guutuu" />
+            <input type="text" id="editBio" class="field-input" placeholder="Ibsa gabaabaa (Bio)" />
+            <button class="upload-pill" style="width:100%;margin-bottom:10px;" onclick="document.getElementById('avatarFile').click()">🖼️ Suuraa Profile Filadhu</button>
+            <input type="file" id="avatarFile" accept="image/*" style="display:none;" />
+            <button class="btn-primary" onclick="updateProfile()">Ol-Kaayi (Save)</button>
+            <button onclick="logout()" style="width:100%;margin-top:10px;background:var(--bg-muted);color:var(--ink-main);border:1px solid var(--line);padding:11px;border-radius:15px;font-weight:700;cursor:pointer;">Ba'i (Logout)</button>
+          </div>
+        </div>
+      </div>
+      <div id="myPostsList"></div>
+    </div>
+
+    <!-- BOTTOM DOCK -->
+    <nav class="bottom-dock">
+      <div class="dock-btn active" id="nav-feed" onclick="openTab('feed')">
+        <span>🏠</span>
+        <span>Fuula</span>
+        <span class="dock-count" id="badgePosts">0</span>
+      </div>
+      <div class="dock-btn" id="nav-friends" onclick="openTab('friends')">
+        <span>👥</span>
+        <span>Namoota</span>
+      </div>
+      <div class="dock-btn" id="nav-chat" onclick="openTab('chat')">
+        <span>💬</span>
+        <span>Chat</span>
+      </div>
+      <div class="dock-btn" id="nav-videos" onclick="openTab('videos')">
+        <span>🎬</span>
+        <span>Viidiyoo</span>
+      </div>
+      <div class="dock-btn" id="nav-profile" onclick="openTab('profile')">
+        <span>👤</span>
+        <span>Profile</span>
+      </div>
+    </nav>
+  </div>
+
+  <!-- MODAL: CREATE POST -->
+  <div id="postModal" class="modal-overlay">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <strong>Maxxansa Haaraa</strong>
+        <button class="tool-btn" onclick="closePostModal()">✕</button>
+      </div>
+      <textarea id="postContent" class="field-input" rows="4" placeholder="Maal yaadaa jirta? Hiriyoota keetiif qoodi..."></textarea>
+      <div id="postFileLabel" style="font-size:12.5px;color:var(--ink-sub);margin-bottom:8px;"></div>
+      <button class="upload-pill" style="width:100%;margin-bottom:12px;" onclick="document.getElementById('postMediaFile').click()">📷 Suuraa / 🎥 Viidiyoo Filadhu</button>
+      <input type="file" id="postMediaFile" accept="image/*,video/*" style="display:none;" onchange="document.getElementById('postFileLabel').innerText = this.files[0] ? 'Filatame: ' + this.files[0].name : ''" />
+      <button class="btn-primary" onclick="submitPost()">Maxxansi</button>
+    </div>
+  </div>
+
+  <!-- MODAL: CREATE STORY -->
+  <div id="storyModal" class="modal-overlay">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <strong>Seenaa Haaraa Uumi</strong>
+        <button class="tool-btn" onclick="document.getElementById('storyModal').style.display='none'">✕</button>
+      </div>
+      <textarea id="storyCaption" class="field-input" rows="3" placeholder="Jecha seenaa kee barreessi..."></textarea>
+      <div id="storyFileLabel" style="font-size:12.5px;color:var(--ink-sub);margin-bottom:8px;"></div>
+      <button class="upload-pill" style="width:100%;margin-bottom:12px;" onclick="document.getElementById('storyMediaFile').click()">🖼️ Suuraa Seenaa Filadhu</button>
+      <input type="file" id="storyMediaFile" accept="image/*" style="display:none;" onchange="document.getElementById('storyFileLabel').innerText = this.files[0] ? 'Filatame: ' + this.files[0].name : ''" />
+      <button class="btn-primary" onclick="submitStory()">Seenaa Qoodi</button>
+    </div>
+  </div>
+
+  <!-- MODAL: FULL-SCREEN STORY VIEWER -->
+  <div id="storyViewerModal" class="modal-overlay" onclick="this.style.display='none'">
+    <div class="modal-panel" style="max-width:400px;padding:0;overflow:hidden;" onclick="event.stopPropagation()">
+      <div id="storyViewerBody" style="min-height:420px;display:flex;flex-direction:column;justify-content:space-between;background:#0f172a;color:#fff;"></div>
+    </div>
+  </div>
+
+<script>
+  const API = "";
+  let isReg = false;
+  let user = JSON.parse(localStorage.getItem("sm_space_user")) || null;
+  let postsCache = [];
+  let storiesCache = [];
+  let ws = null;
+
+  function toggleTheme() {
+    document.body.classList.toggle("dark-mode");
+    const dark = document.body.classList.contains("dark-mode");
+    document.getElementById("themeBtn").innerText = dark ? "☀️" : "🌙";
+    localStorage.setItem("sm_space_theme", dark ? "dark" : "light");
+  }
+  if (localStorage.getItem("sm_space_theme") === "dark") toggleTheme();
+
+  function initials(name) {
+    return (name || "SM").trim().split(/\s+/).slice(0, 2).map(w => w[0].toUpperCase()).join("");
+  }
+
+  function avatarHtml(url, name, size = 40) {
+    if (url) {
+      return `<img src="${url}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--bg-card);" />`;
+    }
+    return `<div style="width:${size}px;height:${size}px;border-radius:50%;background:var(--bg-card);color:var(--indigo);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:${Math.round(size*0.38)}px;">${initials(name)}</div>`;
+  }
+
+  function toggleAuth() {
+    isReg = !isReg;
+    document.getElementById("regFullName").style.display = isReg ? "block" : "none";
+    document.getElementById("authBtn").innerText = isReg ? "Galmaa'i" : "Seeni";
+    document.getElementById("authToggle").innerText = isReg
+      ? "Kanaan dura galmoofteettaa? Asitti seeni"
+      : "Akkaawuntii hin qabduu? Asitti galmaa'i";
+  }
+
+  async function submitAuth() {
+    const full_name = document.getElementById("regFullName").value.trim();
+    const username = document.getElementById("authUsername").value.trim();
+    const password = document.getElementById("authPassword").value.trim();
+    if (!username || !password) return alert("Maaloo Username fi Jecha Icciitii guuti!");
+    if (isReg && !full_name) return alert("Maaloo Maqaa Guutuu kee galchi!");
+
+    const res = await fetch(API + (isReg ? "/register" : "/login"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ full_name, username, password })
+    });
+    const data = await res.json();
+    if (!res.ok) return alert(data.detail || "Dogoggorri uumameera!");
+
+    user = data.user;
+    localStorage.setItem("sm_space_user", JSON.stringify(user));
+    bootApp();
+  }
+
+  function logout() {
+    localStorage.removeItem("sm_space_user");
+    location.reload();
+  }
+
+  function openTab(tab) {
+    ["feed", "friends", "chat", "videos", "profile"].forEach(t => {
+      document.getElementById("view-" + t).style.display = (t === tab) ? "block" : "none";
+      document.getElementById("nav-" + t).classList.toggle("active", t === tab);
+    });
+    if (tab === "friends") loadFriends();
+    if (tab === "videos") renderVideos();
+    if (tab === "profile") loadProfile();
+  }
+
+  function toggleSearch() {
+    const el = document.getElementById("searchWrap");
+    el.style.display = el.style.display === "none" ? "block" : "none";
+  }
+
+  function openPostModal(openFile = false) {
+    document.getElementById("postModal").style.display = "flex";
+    if (openFile) document.getElementById("postMediaFile").click();
+  }
+
+  function closePostModal() {
+    document.getElementById("postModal").style.display = "none";
+  }
+
+  async function bootApp() {
+    document.getElementById("authScreen").style.display = "none";
+    document.getElementById("mainShell").style.display = "block";
+    document.getElementById("composerAvatar").innerHTML = avatarHtml(user.avatar_url, user.full_name, 40);
+    await loadStories();
+    await loadFeed();
+    await loadChat();
+    connectWS();
+  }
+
+  async function loadStories() {
+    const res = await fetch(API + "/stories");
+    storiesCache = await res.json();
+    const row = document.getElementById("storiesRow");
+
+    const addTile = `
+      <div class="story-card" onclick="document.getElementById('storyModal').style.display='flex'">
+        <div class="story-create-top">
+          ${user.avatar_url ? `<img src="${user.avatar_url}" />` : initials(user.full_name)}
+          <div class="story-plus-badge">+</div>
+        </div>
+        <div class="story-create-txt">Seenaa uumi</div>
+      </div>
+    `;
+
+    const tiles = storiesCache.map((s, idx) => `
+      <div class="story-card" onclick="viewStory(${idx})">
+        ${s.media_url
+          ? `<img class="story-img" src="${s.media_url}" />`
+          : `<div class="story-note-bg">${s.caption}</div>`}
+        <div class="story-caption-bar">${s.full_name}</div>
+      </div>
+    `).join("");
+
+    row.innerHTML = addTile + tiles;
+  }
+
+  function viewStory(idx) {
+    const s = storiesCache[idx];
+    if (!s) return;
+    const body = document.getElementById("storyViewerBody");
+    body.innerHTML = `
+      <div style="padding:14px;display:flex;justify-content:space-between;align-items:center;background:rgba(0,0,0,0.5);">
+        <strong>${s.full_name} <span style="font-weight:400;opacity:0.8;">· ${s.created_at}</span></strong>
+        <button onclick="document.getElementById('storyViewerModal').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;cursor:pointer;">✕</button>
+      </div>
+      ${s.media_url ? `<img src="${s.media_url}" style="width:100%;max-height:360px;object-fit:contain;" />` : ""}
+      <div style="padding:16px;font-size:15.5px;font-weight:600;background:rgba(0,0,0,0.55);text-align:center;">${s.caption || ""}</div>
+    `;
+    document.getElementById("storyViewerModal").style.display = "flex";
+  }
+
+  async function submitStory() {
+    const caption = document.getElementById("storyCaption").value.trim();
+    const file = document.getElementById("storyMediaFile").files[0];
+    if (!caption && !file) return alert("Suuraa filadhu ykn jecha seenaa barreessi!");
+
+    const fd = new FormData();
+    fd.append("username", user.username);
+    fd.append("full_name", user.full_name);
+    fd.append("caption", caption);
+    if (file) fd.append("file", file);
+
+    const res = await fetch(API + "/stories", { method: "POST", body: fd });
+    if (res.ok) {
+      document.getElementById("storyCaption").value = "";
+      document.getElementById("storyMediaFile").value = "";
+      document.getElementById("storyFileLabel").innerText = "";
+      document.getElementById("storyModal").style.display = "none";
+      await loadStories();
+    }
+  }
+
+  async function submitPost() {
+    const content = document.getElementById("postContent").value.trim();
+    const file = document.getElementById("postMediaFile").files[0];
+    if (!content && !file) return alert("Maaloo yaada barreessi ykn suuraa/viidiyoo filadhu!");
+
+    const fd = new FormData();
+    fd.append("username", user.username);
+    fd.append("full_name", user.full_name);
+    fd.append("content", content);
+    if (file) fd.append("file", file);
+
+    const res = await fetch(API + "/posts", { method: "POST", body: fd });
+    if (res.ok) {
+      document.getElementById("postContent").value = "";
+      document.getElementById("postMediaFile").value = "";
+      document.getElementById("postFileLabel").innerText = "";
+      closePostModal();
+      await loadFeed();
+    }
+  }
+
+  function postCardHtml(p) {
+    let media = "";
+    if (p.media_url) {
+      media = p.media_type === "video"
+        ? `<video class="post-media" controls src="${p.media_url}"></video>`
+        : `<img class="post-media" src="${p.media_url}" />`;
+    }
+    const cmts = (p.comments || []).map(c => `
+      <div class="comment-item">
+        <strong>${c.full_name}</strong>: ${c.comment_text}
+      </div>
+    `).join("");
+
+    return `
+      <article class="post-card">
+        <div class="post-top">
+          <div class="author-row">
+            <div class="ring-frame">${avatarHtml(p.author_avatar, p.full_name, 40)}</div>
+            <div>
+              <div class="author-name">${p.full_name}</div>
+              <div class="author-sub">@${p.username} · ${p.created_at}</div>
+            </div>
+          </div>
+          ${p.username === user.username ? `<button onclick="deletePost(${p.id})" class="del-chip">Haqi</button>` : ""}
+        </div>
+
+        ${p.content ? `<div class="post-body">${p.content}</div>` : ""}
+        ${media}
+
+        <div class="post-footer-bar">
+          <div class="react-group">
+            <button class="react-chip" onclick="likePost(${p.id})">❤️ ${p.likes}</button>
+            <button class="react-chip" onclick="likePost(${p.id})">🔥</button>
+            <button class="react-chip" onclick="likePost(${p.id})">👏</button>
+            <button class="react-chip" onclick="document.getElementById('cmt-${p.id}').focus()">💬 ${(p.comments || []).length}</button>
+          </div>
+        </div>
+
+        <div class="comments-wrap">
+          ${cmts}
+          <div class="comment-form">
+            <input type="text" id="cmt-${p.id}" placeholder="Yaada kee barreessi..." onkeypress="if(event.key==='Enter') addComment(${p.id})" />
+            <button onclick="addComment(${p.id})">Ergi</button>
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  async function loadFeed() {
+    const res = await fetch(API + "/posts");
+    postsCache = await res.json();
+    document.getElementById("badgePosts").innerText = postsCache.length;
+    renderFeed();
+  }
+
+  function renderFeed() {
+    const q = (document.getElementById("searchInput")?.value || "").toLowerCase();
+    const list = postsCache.filter(p =>
+      p.full_name.toLowerCase().includes(q) || (p.content || "").toLowerCase().includes(q)
+    );
+    document.getElementById("feedList").innerHTML = list.length
+      ? list.map(postCardHtml).join("")
+      : `<div class="post-card" style="text-align:center;color:var(--ink-sub);">Ammatti maxxansi hin jiru.</div>`;
+  }
+
+  function renderVideos() {
+    const vids = postsCache.filter(p => p.media_type === "video");
+    document.getElementById("videosList").innerHTML = vids.length
+      ? vids.map(postCardHtml).join("")
+      : `<div class="post-card" style="text-align:center;color:var(--ink-sub);">Ammatti viidiyoon hin maxxanfamne.</div>`;
+  }
+
+  async function likePost(id) {
+    await fetch(`${API}/posts/${id}/like`, { method: "POST" });
+    await loadFeed();
+  }
+
+  async function deletePost(id) {
+    if (!confirm("Maxxansa kana haquu barbaaddaa?")) return;
+    await fetch(`${API}/posts/${id}?username=${encodeURIComponent(user.username)}`, { method: "DELETE" });
+    await loadFeed();
+    if (document.getElementById("view-profile").style.display !== "none") loadProfile();
+  }
+
+  async function addComment(id) {
+    const inp = document.getElementById(`cmt-${id}`);
+    const comment_text = inp.value.trim();
+    if (!comment_text) return;
+    await fetch(`${API}/posts/${id}/comments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: user.username, full_name: user.full_name, comment_text })
+    });
+    inp.value = "";
+    await loadFeed();
+  }
+
+  async function loadFriends() {
+    const res = await fetch(API + "/users");
+    const users = await res.json();
+    document.getElementById("usersList").innerHTML = users.map(u => `
+      <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);">
+        <div class="ring-frame">${avatarHtml(u.avatar_url, u.full_name, 44)}</div>
+        <div>
+          <div style="font-weight:700;">${u.full_name}</div>
+          <div style="font-size:13px;color:var(--ink-sub);">@${u.username} ${u.bio ? "· " + u.bio : ""}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  async function loadProfile() {
+    const res = await fetch(`${API}/profile/${encodeURIComponent(user.username)}`);
+    if (res.ok) {
+      user = { ...user, ...(await res.json()) };
+      localStorage.setItem("sm_space_user", JSON.stringify(user));
+    }
+    document.getElementById("profAvatarBig").innerHTML = avatarHtml(user.avatar_url, user.full_name, 74);
+    document.getElementById("profName").innerText = user.full_name;
+    document.getElementById("profUser").innerText = "@" + user.username;
+    document.getElementById("profCount").innerText = `${user.post_count || 0} Maxxansa`;
+    document.getElementById("profBio").innerText = user.bio || "Ibsi gabaabaa (Bio) hin barreeffamne.";
+    document.getElementById("editFullName").value = user.full_name;
+    document.getElementById("editBio").value = user.bio || "";
+    const mine = postsCache.filter(p => p.username === user.username);
+    document.getElementById("myPostsList").innerHTML = mine.map(postCardHtml).join("");
+  }
+
+  async function updateProfile() {
+    const full_name = document.getElementById("editFullName").value.trim();
+    const bio = document.getElementById("editBio").value.trim();
+    const avatar = document.getElementById("avatarFile").files[0];
+    if (!full_name) return alert("Maaloo Maqaa Guutuu galchi!");
+
+    const fd = new FormData();
+    fd.append("username", user.username);
+    fd.append("full_name", full_name);
+    fd.append("bio", bio);
+    if (avatar) fd.append("avatar", avatar);
+
+    const res = await fetch(API + "/profile/update", { method: "POST", body: fd });
+    if (res.ok) {
+      const data = await res.json();
+      user = data.user;
+      localStorage.setItem("sm_space_user", JSON.stringify(user));
+      document.getElementById("composerAvatar").innerHTML = avatarHtml(user.avatar_url, user.full_name, 40);
+      await loadProfile();
+      await loadFeed();
+      await loadStories();
+      alert("Profile kee milkaa'inaan fooyya'eera!");
+    }
+  }
+
+  async function loadChat() {
+    const res = await fetch(API + "/messages");
+    const list = await res.json();
+    const box = document.getElementById("chatBox");
+    box.innerHTML = "";
+    list.forEach(appendMsg);
+  }
+
+  function appendMsg(m) {
+    const box = document.getElementById("chatBox");
+    const mine = m.sender === user.username;
+    const d = document.createElement("div");
+    d.className = "chat-bubble" + (mine ? " mine" : "");
+    d.innerHTML = `${!mine ? `<div style="font-size:11px;font-weight:700;opacity:0.8;margin-bottom:2px;">@${m.sender}</div>` : ""}${m.text}<div style="font-size:10px;opacity:0.7;text-align:right;margin-top:3px;">${m.sent_at}</div>`;
+    box.appendChild(d);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function connectWS() {
+    ws = new WebSocket((window.location.protocol==="https:"?"wss:":"ws:")+"//"+window.location.host+"/ws/chat");
+    ws.onmessage = (e) => appendMsg(JSON.parse(e.data));
+  }
+
+  function sendChat() {
+    const inp = document.getElementById("chatInput");
+    const text = inp.value.trim();
+    if (!text || !ws) return;
+    ws.send(JSON.stringify({ sender: user.username, text }));
+    inp.value = "";
+  }
+
+  if (user) bootApp();
+</script>
+</body>
+</html>
