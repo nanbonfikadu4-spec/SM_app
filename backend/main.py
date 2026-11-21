@@ -407,4 +407,4 @@ from fastapi.responses import FileResponse
 
 @app.get("/")
 def serve_ui():
-    return FileResponse(r"C:\Users\Nanbon\SM_app\index.html")
+    return FileResponse(os.path.join(os.path.dirname(__file__), "..", "index.html"))
